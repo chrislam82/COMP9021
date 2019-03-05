@@ -43,7 +43,4 @@ def uniquely_produced_by_rule(line):
     '''
     pass
     # REPLACE pass ABOVE WITH YOUR CODE
-
-for i in range(8):
-    print (i)
     
