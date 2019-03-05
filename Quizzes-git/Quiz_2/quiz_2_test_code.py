@@ -28,6 +28,10 @@ def describe_rule(rule_nb):
     # Dictionaries are not ordered so you cannot print them in order of keys
     # So here, I am doing physically
 
+def describe_rule_test():
+    for i in range(16):
+        describe_rule(i)
+
 def draw_line(rule_nb, first, second, length):
     '''
     "rule_nb" is supposed to be an integer between 0 and 15.
@@ -42,7 +46,11 @@ def draw_line(rule_nb, first, second, length):
     '''
     rule = rule_encoded_by(rule_nb)
     # INSERT YOUR CODE HERE TO PRINT ONE LINE
+    for _ in range(length):
+        print ('1')
 
+def draw_line_test():
+    pass
 
 def uniquely_produced_by_rule(line):
     '''
@@ -64,6 +72,5 @@ def uniquely_produced_by_rule(line):
     list(dictionaries)
 '''
 
-
-for i in range(4):
-    describe_rule(i)
+def uniquely_produced_by_rule():
+    pass
