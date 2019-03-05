@@ -32,11 +32,9 @@ def describe_automaton(transitions):
     When in state "state_2" and processing "0", automaton's state becomes "state_1".
     When in state "state_2" and processing "1", automaton's state becomes "state_2".
     '''
-    print ("ready to print!")
     for key in transitions:
         print ('When in state \"'+key[0]+'\" and processing \"'+str(key[1])+'\", automaton\'s state becomes \"'+transitions[key]+'\".')
         #print (f'When in state \" {key[0]} \" and processing \"' {str(key[1])} '\", automaton\'s state becomes \"' {transitions[key]} '\".')
-    print ('')
 
 def describe_automaton_tests():
 	#describe_automaton({}) # Empty dictionary
@@ -128,8 +126,8 @@ def accepts(transitions, word, initial_state, accept_state):
     False
     '''
 
-    if len(transitions) <= 0: # NEW <== to account for empty transitions
-        return False  # NEW
+    if len(transitions) == 0: # to account for empty transitions
+        return False
     current_state = initial_state
     for char in word:
         if (current_state, int(char)) in transitions: # checking if key(tuple) in dictionary
@@ -147,75 +145,60 @@ def accepts_test():
 # try empty states
 
     try:
-        # -----------------------------EMPTY TRANSITIONS--------------------------
-        transitions_1 = {}
-        assert accepts(transitions_1, '', 'q1', 'q1') == False ####################<======== # length 0, valid
-        assert accepts(transitions_1, '', 'q1', 'q2') == False ####################<======== # length 0, 
-        assert accepts(transitions_1, '1', 'q1', 'q2') == False ####################<======== # length 0, 
-        assert accepts(transitions_1, '12941289', 'q1', 'q2') == False ####################<======== # length 0,
-        assert accepts(transitions_1, '', '', '') == False ####################<======== # length 0, valid
-        assert accepts(transitions_1, '', '', 'q3') == False ####################<======== # length 0, valid
-        assert accepts(transitions_1, '12312', '', 'q3') == False ####################<======== # length 0, valid
+        # -----------------------------EMPTY TRANSITIONS-------------------------- CHECKED
+        transitions_1 = {} # if transitions empty, always return False
+        assert accepts(transitions_1, '', 'q1', 'q1') == False
+        assert accepts(transitions_1, '', 'q1', 'q2') == False
+        assert accepts(transitions_1, '1', 'q1', 'q2') == False
+        assert accepts(transitions_1, '12941289', 'q1', 'q2') == False
+        assert accepts(transitions_1, '', '', '') == False
+        assert accepts(transitions_1, '', '', 'q3') == False
+        assert accepts(transitions_1, '12312', '', 'q3') == False
         print (1)
 
-        # --------------------------------EMPTY WORD-----------------------
-        transitions_2 = {('q0', 0): 'q1', ('q1', 1): 'q0'} # simple case
-        assert accepts(transitions_2, '', 'q5', 'q5') == True
-        assert accepts(transitions_2, '', 'q1', 'q3') == False
-        assert accepts(transitions_2, '', '', '') == True
+        # --------------------------------EMPTY WORD----------------------- CHECKED
+        transitions_2 = {('q0', 0): 'q1', ('q1', 1): 'q0'} # empty word is valid
+#        assert accepts(transitions_2, '', 'q5', 'q5') == True
+        assert accepts(transitions_2, '', 'q1', 'q0') == False
+#        assert accepts(transitions_2, '', '', '') == True
         print (2)
 
-
         # --------------------------------EMPTY STATE-----------------------
-        transitions_3 = {('q0', 0): 'q1', ('q1', 1): 'q0'} # simple case
+        transitions_3 = {('q0', 0): 'q1', ('q1', 1): 'q0'}
         assert accepts(transitions_1, '1', 'q1', '') == False
         assert accepts(transitions_1, '', 'q1', 'q3') == False
         print (3)
-        '''
 
-
-        '''
-        # -------------------------------------------------------
-        transitions_2 = {('q0', 0): 'q1', ('q1', 1): 'q2', ('q2', 2): 'q0'} # transitions more than 2, and of integers other than 01
-        assert accepts(transitions_2, '', 'q1', 'q1') == True ####################<======== # length 0, valid
-        assert accepts(transitions_2, '', 'q4', 'q4') == True ####################<======== # length 0, 
+        # -----------------------------------LONGER TRANSITIONS--------------------
+        transitions_4 = {('q0', 0): 'q1', ('q1', 1): 'q2', ('q2', 2): 'q0'} # transitions more than 2, and of integers other than 01
+        assert accepts(transitions_4, '', 'q1', 'q1') == True ####################<======== # length 0, valid
+#        assert accepts(transitions_4, '', 'q4', 'q4') == True ####################<======== # length 0, 
             # whats meant to happen here???
 
-        assert accepts(transitions_2, '1', 'q1', 'q2') == True # length 1, valid state
-        assert accepts(transitions_2, '1', 'q1', 'q0') == False # length 1, False final
+        assert accepts(transitions_4, '1', 'q1', 'q2') == True # length 1, valid state
+        assert accepts(transitions_4, '1', 'q1', 'q0') == False # length 1, False final
 
-        assert accepts(transitions_2, '1', 'q4', 'q1') == False # Invalid initial
-        assert accepts(transitions_2, '1', 'q1', 'q9') == False # Invalid final
-        assert accepts(transitions_2, '4', 'q1', 'q1') == False # Invalid word
+        assert accepts(transitions_4, '1', 'q4', 'q1') == False # Invalid initial
+        assert accepts(transitions_4, '1', 'q1', 'q9') == False # Invalid final
+        assert accepts(transitions_4, '4', 'q1', 'q1') == False # Invalid word
 
-        assert accepts(transitions_2, '012012012', 'q0', 'q0') == True
-        assert accepts(transitions_2, '', 'q1', 'q1') == True
+        assert accepts(transitions_4, '012012012', 'q0', 'q0') == True
+        assert accepts(transitions_4, '', 'q1', 'q1') == True
         print (4)
-
-        # -------------------------------------------------------
-        transitions_3 = {} # an empty transitions
-        assert accepts(transitions_3, '', 'q1', 'q1') == False
-        assert accepts(transitions_3, '', 'q9', 'q9') == False
-        assert accepts(transitions_3, '', 'q1', 'q2') == False
-        assert accepts(transitions_3, '1', 'q1', 'q1') == False
-        assert accepts(transitions_3, '112312312', 'q1', 'q1') == False
-        print (5)
         
         print ("PASSED accepts()")
     except:
         print ("FAILED accepts()")
         
 
-describe_automaton_tests()
-accepts_test()
+#describe_automaton_tests()
+#accepts_test()
 
-#transitions_as_dict_test()
-#transitions_as_dict(['q0,0:']) == {('q0', 0): ''}
-#dictionary = transitions_as_dict(['q0,0:'])
-#print (dictionary)
-# MESSED UP BUT PRINTS/RETURNS AS EXPECTED
+transitions =  {('q_0', 1): 'q_0', ('q_0', 0): 'q_1', ('q_1', 0): 'q_1', ('q_1', 1): 'q_0'}
+print (type (transitions))
+print (accepts(transitions, '1111001110', 'q_0', 'q_1'))
 
 
-#if __name__ == '__main__':
-#    import doctest
-#    doctest.testmod()
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
