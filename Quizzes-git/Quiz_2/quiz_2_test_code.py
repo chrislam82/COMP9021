@@ -8,6 +8,12 @@ def rule_encoded_by(rule_nb):
     values = [int(d) for d in f'{rule_nb:04b}']
     return {(p // 2, p % 2): values[p] for p in range(4)}
 
+    # So there are 0-15 for integers
+    # THere are 4 elements to dictionary
+    # Each element has 2 possibilities
+    # so the total number of possibilities is 2**4 == 16
+    # Therefore, it covers all possible dictionaries
+
 def describe_rule(rule_nb):
     '''
     "rule_nb" is supposed to be an integer between 0 and 15.
@@ -15,8 +21,12 @@ def describe_rule(rule_nb):
     rule = rule_encoded_by(rule_nb)
     print('The rule encoded by', rule_nb, 'is: ', rule)
     print()
-    # INSERT YOUR CODE HERE TO PRINT 4 LINES
-
+    print(f'After 0 followed by 0, we draw {str(rule[(0, 0)])}')
+    print(f'After 0 followed by 1, we draw {str(rule[(0, 1)])}')
+    print(f'After 1 followed by 0, we draw {str(rule[(1, 0)])}')
+    print(f'After 1 followed by 1, we draw {str(rule[(1, 1)])}')
+    # Dictionaries are not ordered so you cannot print them in order of keys
+    # So here, I am doing physically
 
 def draw_line(rule_nb, first, second, length):
     '''
@@ -43,3 +53,17 @@ def uniquely_produced_by_rule(line):
     '''
     pass
     # REPLACE pass ABOVE WITH YOUR CODE
+
+'''
+    {(0,1):0,(0,1):0,101001}
+    01010101001
+    dictionary = json.loads(string)
+
+
+    temp_
+    list(dictionaries)
+'''
+
+
+for i in range(4):
+    describe_rule(i)
