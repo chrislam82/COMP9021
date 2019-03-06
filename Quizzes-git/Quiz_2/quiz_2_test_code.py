@@ -27,7 +27,7 @@ def describe_rule(rule_nb): # All inputs are ints
     print('The rule encoded by', rule_nb, 'is: ', rule)
     print()
     for (bit_1, bit_2) in rule:
-        print(f'After {str(bit_1)} followed by {str(bit_2)}, we draw {str(rule[(bit_1, bit_2)])}')
+        print(f'After {bit_1} followed by {bit_2}, we draw {rule[(bit_1, bit_2)]}')
 '''
     print(f'After 0 followed by 0, we draw {str(rule[(0, 0)])}')
     print(f'After 0 followed by 1, we draw {str(rule[(0, 1)])}')
@@ -64,6 +64,8 @@ def draw_line(rule_nb, first, second, length): # All inputs are ints
         # Much more lazy but so bad. write better later
     # all of the arguments are ints
 
+    if length == 0:
+        pass
     if length > 0: 
         print (first, end='')
     if length > 1:
@@ -72,16 +74,16 @@ def draw_line(rule_nb, first, second, length): # All inputs are ints
         print (rule[first, second], end='') # just printing the following digit
         first, second = second, rule[(first, second)] # moving everything up by one
     print () # just to create a newline
+        # Its an if to account for, quoting Eric in Wk 3 Lec 1 Start of Lecture:
+        # "If length is 0, output nothing, not a blank line, nothing at all"
+        # "If you output empty string with, end='', then you get nothing at all"
 # drawline now works, just need to account for edge cases of length = 0, 1, 2
 
 def draw_line_test():
     draw_line(10, 1, 0, 0)
-    draw_line(10, 1, 0, 1)
-    draw_line(10, 1, 0, 2)
-    draw_line(10, 1, 0, 3)
-
-
-
+#    draw_line(10, 1, 0, 1)
+#    draw_line(10, 1, 0, 2)
+#    draw_line(10, 1, 0, 3)
 
 def uniquely_produced_by_rule(line): # All inputs are str
     '''
@@ -105,6 +107,7 @@ def uniquely_produced_by_rule(line): # All inputs are str
             if line_dictionary[(first, second)] != third:
                 return -1
         line_dictionary[(first,second)] = third # if it isn't, then we store key value pair
+    print (line_dictionary)
     if len(line_dictionary.keys()) != 4: # dictionary is incomplete; does not have 4 keys hence it is not unique
         return -1 # don't think you actually need this. if dictionary is incomplete, it will still return false
         # The alternative is just to return -1 after the last for loop, because if result is not in rules, then it will run that last line
@@ -158,3 +161,4 @@ def dictionary_compare():
 #uniquely_produced_by_rule_test()
 #dictionary_compare()
 #describe_rule_test()
+#draw_line_test()
