@@ -1,0 +1,45 @@
+Quiz 2 Details:
+# --------------------------
+Can use mark now to compare my output to expected output
+
+Given a rule number between 0 and 15, 
+rule numbers have something to do with binary representation
+
+1st question ,just describe the rule
+
+draw_line
+4 inputs
+1st is rule
+2nd and 3rd is the first 2 digits
+e.g. 
+draw_line (10, 0, 1, 10)
+01...
+last digit is how many digits (so 10 bits long in the previous case)
+
+3rd Q
+Given a sequence
+e.g. 
+100010101010101
+is there a unique rule that can produce this sequence, if not output -1, if yes, provide the rule number
+Can be potentially no rule
+
+E.g.
+if in sequence I have
+101
+and then somewhere else
+100
+then obviously, this cant happen as one key cant provide 2 different rules
+
+Dictionary then fill dictionary
+if dictionary does not have enough keys
+return -1
+if dictionary key has 2 different values
+return -1
+
+There is a very short way to do it
+u can use dir to see what fns each type has to offer
+
+One of the fns in dict gives us a nicer way to do it (pretty sure he hinted we didnt do that one)
+
+Check if each rule generates unique dictionary
+also, is it possible to have a unique dictionary that does not match a rule from 0-15?
