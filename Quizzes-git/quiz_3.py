@@ -16,7 +16,6 @@ except ValueError:
 
 def length_of_longest_increasing_sequence(L): 
     # Given an list of Length L, find the longest sequence
-        # Half of marks for each
     #Can return 0 for list of length 0,null,no elements
     # can return 1 for list of length 1 element
 
@@ -55,23 +54,23 @@ def length_of_longest_increasing_sequence(L):
 def max_int_jumping_in(L):
 # Half of marks for each
 # if output is 010, then that is 10
-# if length of L2 is 0, output is 0 # eric said either is fine technically, but i prefer to stick to 0
+# if length of L2 is 0, output is 0 # eric said either is fine technically (0 or None), but i prefer to stick to 0
 
   max_int = 0 # replace with values if greater, else return 0
 
   for index in range(len(L)): # so run loop for each element
-    access_check = [False] * len(L) # List of length L to check if accessed element yet
-    current_index = index
-    current_list = []
+      access_check = [False] * len(L) # List of length L to check if accessed element yet
+      current_index = index # starting index
+      current_list = [] # list to store values
 
-    while not access_check[current_index]: # While not True # Havn't accessed element
-      current_list.append(str(L[current_index])) # add value of current index to list
-      access_check[current_index] = True # So record that element of pos current_index has been accessed
-      current_index = L[current_index] # so current_index updates to value in element
+      while not access_check[current_index]: # While not True # Havn't accessed element
+          current_list.append(str(L[current_index])) # add value of current index to list
+          access_check[current_index] = True # So record that element of pos current_index has been accessed
+          current_index = L[current_index] # so current_index updates to value in L
+      current_int = int(''.join(current_list)) # Transform into an int
 
-    if current_int > max_int: # checking if value generated is bigger
-      max_int = current_int
-
+      if current_int > max_int: # checking if value generated is bigger
+          max_int = current_int
   return max_int
 
 # 2nd Q
@@ -107,5 +106,4 @@ print('The maximum integer built from L_2 by jumping\n'
       max_int_jumping_in(L_2)
      )
 
-print (element_loop(4, 2))
 
