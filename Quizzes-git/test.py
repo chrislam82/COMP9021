@@ -30,20 +30,19 @@ def max_int_jumping_in(L):
 
 	max_int = 0 # replace with values if greater, else return 0
 
-# So we need to jump elements
-
-	for index in len(range(L)):
-		access_check = [False] * len(range(L)) # List of length L to check if accessed element yet
+	for index in range(len(L)): # so run loop for each element
+		access_check = [False] * len(L) # List of length L to check if accessed element yet
 		current_index = index
-		current_int = []
+		current_list = []
 
-		while not access_check[current_index]: # While not True # Not accessed
-			current_int.add(str(L[current_index])) # add
+		while not access_check[current_index]: # While not True # Havn't accessed element
+			current_list.append(str(L[current_index])) # add value of current index to list
 			access_check[current_index] = True # So record that element of pos current_index has been accessed
 			current_index = L[current_index] # so current_index updates to value in element
 
-		if ''.join(current_int) > max_int: # so turn into a string
-			max_int = ''.join(current_int)
+		if current_int > max_int: # checking if value generated is bigger
+			max_int = current_int
+
 	return max_int
 # for elements in list
 # access, then jump
@@ -51,11 +50,6 @@ def max_int_jumping_in(L):
 # append to list
 # ''.join(list()), might need to convert to str first before appending to list, not sure if i can do it at join
 # then compare with storage
-
-
-
-
-
 
 # 2nd Q
 # lets say we have a list 3,3,5,3,1,0 <-- values
@@ -86,3 +80,7 @@ def max_int_jumping_in(L):
 # if element accessed is True on sieve, append to temp
 # run comparison
 
+
+X = [1,2,3]
+X.append(4)
+print (X)

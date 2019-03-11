@@ -16,6 +16,10 @@ except ValueError:
 
 def length_of_longest_increasing_sequence(L): 
     # Given an list of Length L, find the longest sequence
+        # Half of marks for each
+    #Can return 0 for list of length 0,null,no elements
+    # can return 1 for list of length 1 element
+
     longest_sequence = 0 # If L is empty, should return 0
 
     for starting_index in range(len(L)): # Basically iterating through every index one at a time from 0 to n
@@ -36,38 +40,6 @@ def length_of_longest_increasing_sequence(L):
             longest_sequence = length
 
     return longest_sequence 
-
-
-'''
-    longest_sequence = 0
-    for starting_index in L:
-        current_number = 0
-        next_number = 0
-        current_sequence = [L[starting_index]] # Just convert to str and join at the end
-
-        for next_number in len(range(L)):
-            if L[next_number] >= L[current_number]
-                current_sequence.add(next_number)
-                current_number = next_number
-            else:
-                break
-      # Wrong fn, this is just a counter
-'''
-
-# Something like that
-
-# Half of marks for each
-#Can return 0 for list of length 0,null,no elements
-# can return 1 for list of length 1 element
-
-def max_int_jumping_in(L):
-    pass
-    # REPLACE pass ABOVE WITH  YOUR CODE
-# Half of marks for each
-# if output is 010, then that is 10
-# if length of L2 is 0, output is 0 # eric said either is fine technically, but i prefer to stick to 0
-
-
 # Generates 2 lists of a given length
 # given a seed (the 3 integers)
 # seed, upper_bound, length
@@ -79,15 +51,28 @@ def max_int_jumping_in(L):
   # Use each element only once
 #
 
-# iterate loop
-# store initial pos
-# make sure math returns element position (so i dont have something like -1 vs max length returning no equal) in strictly + from 0 form
 
-# run a checker >= to i+1
-# run a counter
-# run a longest_length counter temp and actual
-# return longest_length
+def max_int_jumping_in(L):
+# Half of marks for each
+# if output is 010, then that is 10
+# if length of L2 is 0, output is 0 # eric said either is fine technically, but i prefer to stick to 0
 
+  max_int = 0 # replace with values if greater, else return 0
+
+  for index in range(len(L)): # so run loop for each element
+    access_check = [False] * len(L) # List of length L to check if accessed element yet
+    current_index = index
+    current_list = []
+
+    while not access_check[current_index]: # While not True # Havn't accessed element
+      current_list.append(str(L[current_index])) # add value of current index to list
+      access_check[current_index] = True # So record that element of pos current_index has been accessed
+      current_index = L[current_index] # so current_index updates to value in element
+
+    if current_int > max_int: # checking if value generated is bigger
+      max_int = current_int
+
+  return max_int
 
 # 2nd Q
 # lets say we have a list 3,3,5,3,1,0 <-- values
@@ -100,24 +85,12 @@ def max_int_jumping_in(L):
 # A quadratic solution is fine, it doesnt have to be smart
 # When you start, you have a list. store this
 # You just need to check that you havnt been somewhere before
-     # Could basically do like sieve, change to T when weve been there before
-     # Advised to build a list of numbers
-     # ''.join(list) <-- string
+    # Could basically do like sieve, change to T when weve been there before
+    # Advised to build a list of numbers
+    # ''.join(list) <-- string
 # indices are always valid
 # doesnt matter if numbers are single digit or not
 # check but pretty sure its not twice in a row, its just if we've every visited that element before
-
-# Returning a list of elements
-# for i in len(list)
-# start at each element
-# ''.join(str(list[element]
-# store pos counters
-# if longest_sequence = temp_sequence
-# return longest_sequence
-# sieve to [False] * len(list) # TF accessed yet or not
-# if element accessed is True on sieve, append to temp
-# run comparison
-
 
 seed(arg_for_seed)
 L_1 = [randint(0, upper_bound) for _ in range(length)]
