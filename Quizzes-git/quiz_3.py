@@ -18,14 +18,15 @@ def length_of_longest_increasing_sequence(L):
     # Given an list of Length L, find the longest sequence
     longest_sequence = 0 # If L is empty, should return 0
 
-    for starting_index in L: # Basically iterating through every index one at a time from 0 to n
+    for starting_index in range(len(L)): # Basically iterating through every index one at a time from 0 to n
         length = 0 # counting the sequence length for each sequence
         current_value = L[starting_index] # value of starting pos
 
         for movement in range(1, len(L)): # Since we don't iterate on first element itself, will add to pos up to len(L) - 1
-            if L[element_loop(starting_index + movement, len(L))] >= current_value # Sequence is increasing
+            position = element_loop(starting_index + movement, len(L))
+            if L[position] >= current_value: # Sequence is increasing
                 length += 1
-                current_value = L[element_loop(starting_index + movement, len(L))] # update value storage
+                current_value = L[position] # update value storage
             else:
                 break # once we have a smaller value, we break the loop
 
@@ -34,14 +35,14 @@ def length_of_longest_increasing_sequence(L):
 
     return longest_sequence 
 
-def element_loop(current_index, length):
+def element_loop(current_index, length): # so that check can loop
     if current_index > length:
         return length - currrent_index
     else:
         return current_index
 
 
-
+'''
     longest_sequence = 0
     for starting_index in L:
         current_number = 0
@@ -55,6 +56,7 @@ def element_loop(current_index, length):
             else:
                 break
       # Wrong fn, this is just a counter
+'''
 
 # Something like that
 
@@ -136,4 +138,5 @@ print('The maximum integer built from L_2 by jumping\n'
       max_int_jumping_in(L_2)
      )
 
+print (element_loop(4, 2))
 
