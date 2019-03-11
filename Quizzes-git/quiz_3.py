@@ -19,11 +19,13 @@ def length_of_longest_increasing_sequence(L):
     longest_sequence = 0 # If L is empty, should return 0
 
     for starting_index in range(len(L)): # Basically iterating through every index one at a time from 0 to n
-        length = 0 # counting the sequence length for each sequence
+        length = 1 # counting the sequence length for each sequence
         current_value = L[starting_index] # value of starting pos
 
         for movement in range(1, len(L)): # Since we don't iterate on first element itself, will add to pos up to len(L) - 1
-            position = element_loop(starting_index + movement, len(L))
+            position = starting_index + movement
+            if position >= len(L):
+              position -= len(L)
             if L[position] >= current_value: # Sequence is increasing
                 length += 1
                 current_value = L[position] # update value storage
@@ -34,12 +36,6 @@ def length_of_longest_increasing_sequence(L):
             longest_sequence = length
 
     return longest_sequence 
-
-def element_loop(current_index, length): # so that check can loop
-    if current_index > length:
-        return length - currrent_index
-    else:
-        return current_index
 
 
 '''
