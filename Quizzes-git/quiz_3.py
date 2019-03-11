@@ -1,0 +1,139 @@
+# Written by Eric Martin for COMP9021
+
+
+
+import sys
+from random import seed, randint, randrange
+
+
+try:
+    arg_for_seed, upper_bound, length =\
+            (int(x) for x in input('Enter three integers: ').split())
+except ValueError:
+    print('Incorrect input, giving up.')
+    sys.exit()
+# tests will only use + inputs including 0, so no need to worry about negative
+
+def length_of_longest_increasing_sequence(L): 
+    # Given an list of Length L, find the longest sequence
+    longest_sequence = 0 # If L is empty, should return 0
+
+    for starting_index in L: # Basically iterating through every index one at a time from 0 to n
+        length = 0 # counting the sequence length for each sequence
+        current_value = L[starting_index] # value of starting pos
+
+        for movement in range(1, len(L)): # Since we don't iterate on first element itself, will add to pos up to len(L) - 1
+            if L[element_loop(starting_index + movement, len(L))] >= current_value # Sequence is increasing
+                length += 1
+                current_value = L[element_loop(starting_index + movement, len(L))] # update value storage
+            else:
+                break # once we have a smaller value, we break the loop
+
+        if length > longest_sequence: # at end of each index check, if we have a longer length, then update length
+            longest_sequence = length
+
+    return longest_sequence 
+
+def element_loop(current_index, length):
+    if current_index > length:
+        return length - currrent_index
+    else:
+        return current_index
+
+
+
+    longest_sequence = 0
+    for starting_index in L:
+        current_number = 0
+        next_number = 0
+        current_sequence = [L[starting_index]] # Just convert to str and join at the end
+
+        for next_number in len(range(L)):
+            if L[next_number] >= L[current_number]
+                current_sequence.add(next_number)
+                current_number = next_number
+            else:
+                break
+      # Wrong fn, this is just a counter
+
+# Something like that
+
+# Half of marks for each
+#Can return 0 for list of length 0,null,no elements
+# can return 1 for list of length 1 element
+
+def max_int_jumping_in(L):
+    pass
+    # REPLACE pass ABOVE WITH  YOUR CODE
+# Half of marks for each
+# if output is 010, then that is 10
+# if length of L2 is 0, output is 0 # eric said either is fine technically, but i prefer to stick to 0
+
+
+# Generates 2 lists of a given length
+# given a seed (the 3 integers)
+# seed, upper_bound, length
+# generating a list of that length using that seed to generate random numbers between 0 and the bound
+# 
+# Find the longest increasing sequence in the list including wrapping around list when needed (like a circle or ring)
+# As we can see in expected output, the same number is considered part of the increasing sequence so 3 3 6 is 3 integers
+# What about a list of 0s? 0,0,0,0,0 --> 5
+  # Use each element only once
+#
+
+# iterate loop
+# store initial pos
+# make sure math returns element position (so i dont have something like -1 vs max length returning no equal) in strictly + from 0 form
+
+# run a checker >= to i+1
+# run a counter
+# run a longest_length counter temp and actual
+# return longest_length
+
+
+# 2nd Q
+# lets say we have a list 3,3,5,3,1,0 <-- values
+#                         0,1,2,3,4,5 <-- indexes
+# Index 0 == 3-->index 3 == 3 (been here already, so stop) 33
+# Index 1 == 3      ''   same  33
+# Index 2 == 5--> index 5 == 0-->Index 0 == 3--> index 3==3 (so stop) 5033
+# We want the largest number (which is 5033)
+# So loop all positions: 0,1,2,3,...
+# A quadratic solution is fine, it doesnt have to be smart
+# When you start, you have a list. store this
+# You just need to check that you havnt been somewhere before
+     # Could basically do like sieve, change to T when weve been there before
+     # Advised to build a list of numbers
+     # ''.join(list) <-- string
+# indices are always valid
+# doesnt matter if numbers are single digit or not
+# check but pretty sure its not twice in a row, its just if we've every visited that element before
+
+# Returning a list of elements
+# for i in len(list)
+# start at each element
+# ''.join(str(list[element]
+# store pos counters
+# if longest_sequence = temp_sequence
+# return longest_sequence
+# sieve to [False] * len(list) # TF accessed yet or not
+# if element accessed is True on sieve, append to temp
+# run comparison
+
+
+seed(arg_for_seed)
+L_1 = [randint(0, upper_bound) for _ in range(length)]
+print('L_1 is:', L_1)
+print('The length of the longest increasing sequence\n'
+      '  of members of L_1, possibly wrapping around, is:',
+      length_of_longest_increasing_sequence(L_1), end = '.\n\n'
+     )
+L_2 = [randrange(length) for _ in range(length)]
+print('L_2 is:', L_2)
+print('The maximum integer built from L_2 by jumping\n'
+      '  as directed by its members, from some starting member\n'
+      '  and not using any member more than once, is:',
+      max_int_jumping_in(L_2)
+     )
+
+
