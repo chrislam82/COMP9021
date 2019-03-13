@@ -105,5 +105,5 @@ print('The maximum integer built from L_2 by jumping\n'
       '  and not using any member more than once, is:',
       max_int_jumping_in(L_2)
      )
-
+# So L_2 is randomising numbers up to length (it wont go over, no need to control for elements over bounds)
 
