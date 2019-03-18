@@ -17,6 +17,9 @@ import os
 import csv
 import gzip
 
+import timeit
+
+start = timeit.default_timer()
 
 filename = 'HNP_Data.csv.gz'
 if not os.path.exists(filename):
@@ -37,34 +40,31 @@ with gzip.open(filename) as csvfile:
     # type(cells) --> str
     # can be both float and int form
     # Empty cells are saved as an empty string ('') # can see by printing rows
-    temp_value_store = 0 # for storing converted values
+    indicator_value = 0 # for storing converted values
     for data_row in file:
-        if indicator_of_interest in data_row[2:3]: # by doing so, i can check only element 2 in list, and only the whole name of indicator
-            for data_col in range(4, len(data_row)): # checking all years starting in element 4 in list
+        if indicator_of_interest in data_row[2:3]: # by doing so, i can check only element 2 in list, and only the whole name of indicator (in case country name or numbers passed in)
+            for data_col in range(4, len(data_row)): # checking all years starting in element 4 in list (5th element of list)
                 try: # testing if value is an int
-                    temp_value_store = int(data_row[data_col])
-                except:
-                    pass # if not int, then move to 2nd try
-                try: # testing if value is a float
-                    temp_value_store = float(data_row[data_col])
-                except:
-                    continue # If neither, then nothing happens, continue will move to next loop
+                    indicator_value = int(data_row[data_col])
+                except: # if not int, then move to nested try; nested because it otherwise converts all int to float
+                    try: # testing if value is a float
+                        indicator_value = float(data_row[data_col])
+                    except:
+                        continue # If neither, then nothing happens, continue will move to next interation of for loop
                 
-                if max_value == None: # initialise max_value for comp if indicator is found
-                    max_value = 0
-#                print (data_col)
+                if max_value == None:
+                    max_value = 0 # initialise max_value for comp if a valid value for indicator is found
 
-                current_year = data_col + first_year - 4
-                if temp_value_store == max_value: # then append based on yr to dictionary
+                current_year = data_col + first_year - 4  # key = 1960 + col no. - 4 to adjust for cols starting at index 4
+                if indicator_value == max_value:
                     if current_year in countries_for_max_value_per_year:
-                        countries_for_max_value_per_year[data_col + first_year - 4].append(data_row[0]) # could just have another if statement instead
+                        countries_for_max_value_per_year[current_year].append(data_row[0]) # appending country name
                     else:
-                        countries_for_max_value_per_year[current_year] = [data_row[0]] # key = 1960 + col no. - 4 to adjust for cols starting at 4 and assign value to countryname for row
-                elif temp_value_store > max_value:
-                    countries_for_max_value_per_year = {} # reassign to an new empty dict
-                    max_value = temp_value_store # assign max_value to new value
+                        countries_for_max_value_per_year[current_year] = [data_row[0]] # adding key instead since year not in dict
+                elif indicator_value > max_value: # we've found an even greater value
+                    countries_for_max_value_per_year = {} # reassign to an new empty dict # not the best but im not sure about runtime for dict.clear
+                    max_value = indicator_value # assign max_value to new value
                     countries_for_max_value_per_year[current_year] = [data_row[0]] # key = 1960 + col no. - 4 to adjust for cols starting at 4 and assign value to countryname for row
-                    print ("new country added. year==", str(current_year))
 
 
 
@@ -89,9 +89,19 @@ else:
     print('The maximum value is:', max_value) # We'd just be storing this and changing or evaluating at end
     print('It was reached in these years, for these countries or categories:')
     print('\n'.join(f'    {year}: {countries_for_max_value_per_year[year]}'
-                                  for year in sorted(countries_for_max_value_per_year)
+                                  for year in sorted(countries_for_max_value_per_year) # already sorted so i dont have to sort countries
                    )
          )
+
+stop = timeit.default_timer()
+print ('Runtime: ', stop - start) # approximately 1.5sec runtime
+
+
+
+
+
+
+
 
 # So here, it is clear that countries for max value per year is a dictionary
     # Question is, what are the keys and what are the values?
