@@ -34,31 +34,52 @@ with gzip.open(filename) as csvfile:
     file = csv.reader(line.decode('utf8').replace('\0', '') for line in csvfile) # file is a csv.reader object so use csv module to access
     # Ok, so i can iterate through file without overflowing
     # What we want to do is skip the first row, actually the indicator will never be in there, so we should be fine
+    # type(cells) --> str
+    # can be both float and int form
+    # Empty cells are saved as an empty string ('') # can see by printing rows
+    temp_value_store = 0 # for storing converted values
     for data_row in file:
-        if indicator_of_interest in data_row: # make it specifically row with indicator name, else lecturer may pass in name of a country and cause a false +
-            for data_col in range (something, len(data_row)):
-                if data_col == max_value:
-                    countries_for_max_value_per_year[whatever year].append(data_row[whatever col country name is in])
-                elif:
-                    data_col > max_value:
-                    countries_for_max_value_per_year = {} # reassign to a new dict
-                    max_value = data_col # reassign max_value to the new max value
-                    countries_for_max_value_per_year[some kind of year calc].append(data_row[whatever col country name is in])
+        if indicator_of_interest in data_row[2:3]: # by doing so, i can check only element 2 in list, and only the whole name of indicator
+            for data_col in range(4, len(data_row)): # checking all years starting in element 4 in list
+                try: # testing if value is an int
+                    temp_value_store = int(data_row[data_col])
+                except:
+                    pass # if not int, then move to 2nd try
+                try: # testing if value is a float
+                    temp_value_store = float(data_row[data_col])
+                except:
+                    continue # If neither, then nothing happens, continue will move to next loop
+                
+                if max_value == None: # initialise max_value for comp if indicator is found
+                    max_value = 0
+#                print (data_col)
 
-            # Run for comparison on list # different conditions
-                # range = (start of 1960, 1960 + number_of_years) # make sure it doesnt overflow
+                current_year = data_col + first_year - 4
+                if temp_value_store == max_value: # then append based on yr to dictionary
+                    if current_year in countries_for_max_value_per_year:
+                        countries_for_max_value_per_year[data_col + first_year - 4].append(data_row[0]) # could just have another if statement instead
+                    else:
+                        countries_for_max_value_per_year[current_year] = [data_row[0]] # key = 1960 + col no. - 4 to adjust for cols starting at 4 and assign value to countryname for row
+                elif temp_value_store > max_value:
+                    countries_for_max_value_per_year = {} # reassign to an new empty dict
+                    max_value = temp_value_store # assign max_value to new value
+                    countries_for_max_value_per_year[current_year] = [data_row[0]] # key = 1960 + col no. - 4 to adjust for cols starting at 4 and assign value to countryname for row
+                    print ("new country added. year==", str(current_year))
 
-            # Run comparison, else it will just skip row
-            # if greater, write year and store
 
-#    print (next(file))
-# So each row is stored in lists with each cell an element of the list
 
-# for each row, if indicator_of_interest in data_row:
-    # then that row has indicator
-# Access 
 
-#
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -84,6 +105,43 @@ else:
     # Could store, then compare
     # if larger value found, then clear dictionary and replace values
     # update
+
+
+
+'''
+# ---------------------------- Edge Cases ----------------------------
+same number of decminal places as file: # no need to deal with, just allow default formatting
+Eric --> That value is the string in the file is converted to an int if possible, or to a float otherwise; no need to fiddle around with the resulting value.
+    # something to do with storing as int vs float (i think store in whatever format the int is stored in) (or maybe its stored as a str, not sure)
+Eric --> Rows with empty data are ignored
+
+Limiting factors:
+    row length
+    mixed data types in row
+    run-time stress test
+    ordering (specific to lexicographic order)
+    Empty rows, country data with no col, row that is completely empty ([])
+    empty lines
+    empty cells
+
+30 secs/test is the runtime limit
+    # remember, my laptop is slower than erics, so i might run slower, but better to err on the safe side
+
+
+
+
+
+
+
+'''
+
+
+
+
+
+
+
+
 
 
 
