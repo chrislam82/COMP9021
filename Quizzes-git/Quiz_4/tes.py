@@ -14,28 +14,37 @@ def float_test ():
 	integer_float = '5.0'
 	floating = '2.34'
 
-	print (int(integer))
+	print ("float tests")
+	print (int(integer)) # --> 7
 	#print (int(integer_float)) # Error
 	#print (int(floating)) # Error
 
-	print (float(integer))
-	print (float(integer_float))
-	print (float(floating))
+	print ()
+	print (float(integer)) # --> 7.0
+	print ()
+
+	print (float(integer_float)) # -->  5.0
+	print ()
+	print (float(floating)) # --> 2.34
+	print ()
 
 	print (type(float(integer)))
+	print ()
 	print (type(float(integer_float)))
+	print ()
 	print (type(float(floating)))
+	print ()
 
 def comparison_empty_string():
 	empty = ''
 	#convert_int = int(empty)
 	#convert_float = float(empty)
 	if empty is '':
-		print (True)
+		print (True) # --> True
 	else:
 		print (False)
 
 comparison_empty_string()
 # none_test()
-#float_test()
+float_test()
 

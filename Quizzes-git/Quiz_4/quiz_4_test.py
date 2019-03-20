@@ -40,7 +40,8 @@ with gzip.open(filename) as csvfile:
     # type(cells) --> str
     # can be both float and int form
     # Empty cells are saved as an empty string ('') # can see by printing rows
-    indicator_value = 0 # for storing converted values
+
+#    indicator_value = 0 # for storing converted values
     for data_row in file:
         if indicator_of_interest in data_row[2:3]: # by doing so, i can check only element 2 in list, and only the whole name of indicator (in case country name or numbers passed in)
             for data_col in range(4, len(data_row)): # checking all years starting in element 4 in list (5th element of list)
@@ -88,7 +89,7 @@ if max_value is None:
 else:
     print('The maximum value is:', max_value) # We'd just be storing this and changing or evaluating at end
     print('It was reached in these years, for these countries or categories:')
-    print('\n'.join(f'    {year}: {countries_for_max_value_per_year[year]}'
+    print('\n'.join(f'    {year}: {sorted(countries_for_max_value_per_year[year])}' # Changed Lec code for this to sorted so i get countries listed in lexicographic order as requested
                                   for year in sorted(countries_for_max_value_per_year) # already sorted so i dont have to sort countries
                    )
          )
