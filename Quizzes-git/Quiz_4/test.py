@@ -48,4 +48,4 @@ def list_access_test ():
 		print ("test_list2 done")
 
 list_access_test()
-# dictionary_lexicographic_order()
+dictionary_lexicographic_order()
