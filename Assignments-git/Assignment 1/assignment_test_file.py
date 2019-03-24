@@ -1,13 +1,9 @@
 # Assignment_test_file.py
 
 def string_split ():
-	test_list = ['I', 'am', 'here\"', 'now']
-	print (test_list)
-	for element in test_list:
-		if '\"' in element:
-			temp = '\"'.split('\"')
-			print (temp)
-	print (test_list)
+	string = '.'
+	temp = string.split('.')
+	print (temp)
 
 string_split()
 
@@ -20,3 +16,10 @@ def list_initial ():
 	print (type(test_list))
 
 #list_initial()
+
+def find_index_test ():
+	word = "bcdeabcdeabcde"
+	for count in range(50):
+		print (word.find('a')) # Using find because find does not return error whereas index does		
+
+#find_index_test()
