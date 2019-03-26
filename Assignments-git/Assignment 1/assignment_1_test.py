@@ -2,26 +2,91 @@
 # So only one person speaking
 # If nobody speaking, then purpose is mainly to point out how many people there might be
 
-def string_split_function(string): # Given a string, split if punctuation found
-	pass
+# NOTES:
+# DOUBLE TEST punctuation_split
+	# Especially regex part and think about special case displays of mix of letters and punctuation to create words
 
-# ['.', 'I', 'have', 'just', 'seen', 'Sirs', 'Sanjay', 'and', 'Eleonore!\n', '"I', 'am', 'a', 'Knave,"', 'whispered', 'Sir', 'Eleonore.\n', 'Who', 'is', 'a', 'Knight', 'and',
-#'who', 'is', 'a', 'Knave?\n']
+import os
+import re
 
-# Note, check other special case chars too like \t (might evaluate to space and thus eliminated during split)
-def parsing_text_file(file, text):
-	for line in file: # converting each line to list
+def punctionation_split (file, text):
+	for line in file: # Each line in in iterator is just a str
+		print (line)
 		line_list = line.split(' ')
+		print (line_list)
 		for word in line_list:
-			word_start = 0 # start of string
-			for char_position in range(len(word)):
-				for special_char in ('\"', '\'', '.', '?', '!', ',', '\n'): # easier this way as we get to store special_char; not using if would still have to loop through tuple
-					if special_char in word[char_position]:
-						text.append(word[0:char_position])
-						text.append(special_char)
-						#word = word[0:char_position]
-						#char_position = 0
+			split = re.search('([\"\'.?!,]*)([a-zA-Z\']*)([\"\'.?!,]*)', word) # word potentially surrounded by punctuation on either side
+			word_split = split.groups()
+			for split_word in word_split:
+				text.append(split_word)
+	while True: # Removing extra '' in list created by * in regex
+		try:
+			text.remove('')
+		except:
+			break
+	return text
+# NOTE!!! WHAT ABOUT EDGE CASE OF WORD ENDING WITH '
+# MAKE SURE I ACCOUNT FOR THAT
+
+
+# ------------------------------------- CODE BODY -----------------------------------
+
+
+text = ['.'] # dont have to adjust parsing or sentence checking. Can also remove later
+# special_characters = ('\"', '\'', '.', '?', '!', ',', '\n')        < ------------------# Add more if necessary then also add to regex
+
+with open('test_1.txt') as file: 
+	punctionation_split(file, text)
+	print ()
 	print (text)
+	print (' '.join(text))
+# ---------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	'''
@@ -106,45 +171,6 @@ def parsing_text_file(file, text):
 # Also, code above doesnt account for \n and " in same string, so lead to error
 # Think about how to store and process first on paper before coding
 # At least part of the general parsing of text into a data structure is working for now
-
-def finding_sirs_and_sentences(text):
-	for string in text:
-		if 'sir' in string:
-			print ('found string:', string)
-			# some processing based on finding sir, knight and/or knave in sentence
-				# Should probably do a prelim table
-				# THere is always a chance that a sir is not mentioned in any quotes but mentioned in general text
-				# In which case, they could either be a knight or knave
-			# Check the rules, but i think store 4 temp values, 2 for start and end of sentence, 2 for start and end of speech
-			# Find sir in outside of speech but inside of sentence
-			# Create truth statement based on sir outside telling truth or lying
-		if string in ('\"', '.', '?', '!', ','):
-			#end of sentence
-			#Then we can find who is speaking
-			pass
-			# All names following Sir capitalised. I think
-			# If true, then easier to find
-			# Names cant start without Sir and only other possible other capital is start of sentence which at most has to be Sir since Sir MUST precede names
-
-def processing_comments(text, sentences):
-	for string in text:
-		continue
-# ------------------------------------- CODE BODY -----------------------------------
-
-import os
-
-text = ['.'] # dont have to adjust parsing
-speaking = False
-sentences = []
-sirs = []
-with open('test_1.txt') as file:
-	''' opens as a bunch of strings
-	for element in file:
-		print (element)
-	'''
-	parsing_text_file(file, text)
-#	sirs, sentences = finding_sirs_and_sentences(text)
-#	processing_comments(text,)
 
 # ------------------------------------- OTHER JUNK -----------------------------------
 
