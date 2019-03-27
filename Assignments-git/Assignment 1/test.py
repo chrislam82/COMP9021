@@ -18,10 +18,10 @@ truth_dictionary = {}
 # Then someone says, andrew is knight, or andrew is knave? would that conflict if i didnt store the alternative (could always store as 3) (if 3, then always ignore)
 # This means andrew will generate 1 ignore statement, 1 truth statement
 
-Andrew = [0]
-Nancy = [1]
-Bill = [2]
-Hilary = [2]
+Andrew = [0,0]
+Nancy = [1,1]
+Bill = [2,1]
+Hilary = [2,2]
 
 
 Z = product(Andrew, Nancy, Bill, Hilary)
