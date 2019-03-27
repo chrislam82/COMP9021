@@ -1,16 +1,29 @@
-# 30sec/test as usual
-# So only one person speaking
-# If nobody speaking, then purpose is mainly to point out how many people there might be
+# COMP9021 Assignment 1
+# Christopher Lam
 
 # NOTES:
-# DOUBLE TEST punctuation_split
-	# Especially regex part and think about special case displays of mix of letters and punctuation to create words
+# Think about differences in using 'in', 'is', '=='
+# Maybe dont use 2. THe problem with 2 is that we have to figure out the number of solutions given several 2s
+
 
 import os
 import re
 
+# -------------------------------------------------------------- punctuation_split fn ------------------------------------------------------------
+# DOUBLE TEST punctuation_split
+	# Especially regex part and think about special case displays of mix of letters and punctuation to create words
+# NOTE!!! WHAT ABOUT EDGE CASE OF WORD ENDING WITH '
+# MAKE SURE I ACCOUNT FOR THAT
+
+# str.replace --> all \n with ' ' (Also, what about \t, others with \) <-- \t should equate to ' ' so should be fine
+# str.replace --> all punctuation with . (assuming ? and . have same meaning)
+
 def punctionation_split (file, text):
 	for line in file: # Each line in in iterator is just a str
+		line = line.replace('?', '.') # <----------------- NOTE this is only ok if '?' has no special difference in speech comprehension
+		line = line.replace('!', '.')
+		line = line.replace('\n', ' ')
+		line = line.replace(',', ' ') # <----------------- NOTE this is only ok if ',' has no special difference in speech comprehension 
 		print (line)
 		line_list = line.split(' ')
 		print (line_list)
@@ -25,22 +38,51 @@ def punctionation_split (file, text):
 		except:
 			break
 	return text
-# NOTE!!! WHAT ABOUT EDGE CASE OF WORD ENDING WITH '
-# MAKE SURE I ACCOUNT FOR THAT
 
+# -------------------------------------------------------------- find_sirs fn ------------------------------------------------------------
+# Used to find all sirs, also useful for finding sirs in speech
+	# Not sure if speech sir search is same implementation though
 
-# ------------------------------------- CODE BODY -----------------------------------
+def find_sirs (text, list_of_sirs):
+	word_pos = 0
+	print (len(text))
+	while word_pos != len(text): # Allows situational double jumps
+		print (word_pos)
+		if text[word_pos] == 'Sir':
+			if text[word_pos] not in list_of_sirs:
+				list_of_sirs.append(text[word_pos + 1])
+				print (list_of_sirs)
+		elif text[word_pos] == 'Sirs':
+			while text[word_pos + 1] != 'and':
+				if text[word_pos + 1] not in list_of_sirs:
+					list_of_sirs.append(text[word_pos + 1])
+					print (list_of_sirs)
+				word_pos += 1
+		word_pos += 1
+	list_of_sirs = sorted(list_of_sirs)
+			
 
+# ------------------------------------------------------------------- CODE BODY -----------------------------------------------------------------
 
+file_name = input('Which text file do you want to use for the puzzle? ')
+
+list_of_sirs = [] # Since lists are ordered, I prefer to use lists. Just check for duplication before adding an element
 text = ['.'] # dont have to adjust parsing or sentence checking. Can also remove later
 # special_characters = ('\"', '\'', '.', '?', '!', ',', '\n')        < ------------------# Add more if necessary then also add to regex
 
-with open('test_1.txt') as file: 
+
+with open('test_1.txt') as file:
+	# split and replace punction for processing purposes
 	punctionation_split(file, text)
+	# find all sirs
+	find_sirs(text, list_of_sirs)
+	print ()
+	print (list_of_sirs)
 	print ()
 	print (text)
+	print ()
 	print (' '.join(text))
-# ---------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -48,149 +90,3 @@ with open('test_1.txt') as file:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	'''
-						special_char_position = word.find(special_char) # position of special char in word
-						# I could either store positions in a dictionary or something or do it without storing first
-						# Storing would give me beneift of doing everything at the end through splitting and dont have to think about the recheck problem
-							# Recheck problem might be k if we word and char reset works well with for loop
-							# In which case, we wouldnt need to have as complex code
-						# Doing everything in one go might be faster
-
-
-						temp_list = word.split(special_char) # problem with using split is that you lose the special char and dont know where it was located
-						print (temp_list[0])
-						text.append(temp_list[0])
-						#text += temp_list
-						# The question here is now how to recheck the word for more special char
-						# the rest of the string in temp_list[1]
-	'''
-
-
-
-#			if '.' in word:
-#				temp_list = word.split('.')
-#				text.append(temp_list[0])
-				# So this works, the question is what if there are 2 punctuation within the sentence
-				# The last part becomes, what if there is only one, in which case I end up with whitesapce. Then I would need to delete the whitespace
-
-
-
-	'''
-					print ("found")
-					text.append(word[char])
-
-	for word in text:
-		if word == '':
-			pass
-	print (text)
-	test_chat = '.'
-	if test_chat in ('\"', '\'', '.', '?', '!', ','):
-		print ("found")
-		text.append(test_chat)
-	'''
-
-	# Alternative method, just check for chars when trying to find truth statements and pop or remove or something before processing
-'''
-			if '\"' in string:
-
-				temp_string_split = string.split('\"')
-			if '\'' in string:
-				temp_string_split = string.split('\'')
-			if '.' in string:
-				temp_string_split = string.split('\"')
-			if '?' in string:
-				temp_string_split = string.split('\"')
-			if '!' in string:
-				temp_string_split = string.split('\"')
-			if ',' in string:
-				temp_string_split = string.split('\"')
-
-			# Doing splitting
-			if any(('\"', '\'', '.', '?', '!', ',')) in string:
-				print ("found")
-	text += [string]
-	print (text)
-
-	if ' ' in ...:
-		temp_string_split.remove(' ')
-	text += temp_string_split
-'''
-'''
-			if string.endswith('\"'):
-				text += string.split('\"') +['\"']
-			elif string.startswith('\"'):
-				text += ['\"'] + string.split('\"')
-			if '\n' in string:
-				temp_string_split = string.split('\n')
-				#print (temp_string_split)
-				text += [temp_string_split[0]]
-			
-'''
-# NOTE: theres still a lot of problems here, havnt split end of sentences and stored it
-# Also, code above doesnt account for \n and " in same string, so lead to error
-# Think about how to store and process first on paper before coding
-# At least part of the general parsing of text into a data structure is working for now
-
-# ------------------------------------- OTHER JUNK -----------------------------------
-
-
-
-'''
-			text += line
-
-		print (line_list)
-'''
-
-'''
-		if string.endswith(('.','!','?',))
-
-if speaking:
-
-if speaking:
-'''
-
-# We could try parse everything once
-# Or do a double parse
-	# 1st time, to note who is sirs (might be beneficial for data storage generation before inserting T/F stuff) and also to separate " from other things in text
-	# Second time for actual generation

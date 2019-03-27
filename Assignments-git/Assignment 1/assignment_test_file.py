@@ -1,9 +1,19 @@
 # Assignment_test_file.py
+# Just testing how different functions work here
+
+def string_replace ():
+	test_string = '1_1_1_1_1_1_1_1_1_1'
+	print (test_string.replace('1', '2')) # So replaces all occurrences
+
+	test_string = '1_1_1_1_1_1_1_1_1_1'
+	print (test_string.replace('0', '2')) # So fine even if none
+
+# string_replace()
 
 def truth_dictionary_access ():
 	from itertools import product
 
-	test_dictionary = {'John':(0,1), 'Jack':(0,0)}
+	test_dictionary = {'John':(0,1), 'Jack':(0,0), 'James':(2,1)}
 	# In python 3.6, dictionaries are insertion ordered
 	# https://stackoverflow.com/questions/39980323/are-dictionaries-ordered-in-python-3-6
 
@@ -16,8 +26,10 @@ def truth_dictionary_access ():
 	truth_tuple = list(product(*test_dictionary.values()))
 	print (truth_tuple)
 
+#	truth_dictionary['John']
+
 	# NOTE
-	# 1. Need to make sur that insertion order in test_dictionary is true
+	# 1. Need to make sur that insertion order in test_dictionary is true 						<--- see sorting_dictionary() below
 	# 2. Need to make sure that product of values will product in order according to key order in dictionary
 
 #truth_dictionary_access()
@@ -30,7 +42,7 @@ def sorting_dictionaries ():
 
 	# So here, we can sort dict.items() to ensure lexi... order
 
-sorting_dictionaries()
+#sorting_dictionaries()
 
 def string_split ():
 	string = '.'

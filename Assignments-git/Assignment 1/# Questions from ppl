@@ -1,0 +1,96 @@
+# Questions from ppl
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+In the boundary test, will there be a knight or knave name is "Sir", which is unreasonable in daily life.
+I don't think it should matter, as names can be considered arbitrary. The prefix 'Sir' is separate from the following name.
+Eric: Vidan is correct, that would not be very a good name indeed, but a good solution would accept it as any other name, not giving it special treatment.
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+For assignment 1, will there be deliberately incorrectly-worded or invalid statements in the additional test cases (e.g. saying "All of them are Knights" instead of "All of us are Knights") that we have to error-proof against?
+Eric: No, the inputs will be as described.
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Hi all,
+
+I am struggling to  separate out the names of the Sirs after I have managed to get each individual sentences.
+
+Would anyone be able to give me a hint on how they achieved to separate out the different Sirs?
+
+Much Appreciated!
+
+Jian --> If you get individual sentence, you can find the Sir_Name is followe the "Sir" and you just find all Capitalized words after "Sir" without "Knave(s)/Knight(s)".
+
+# I believe we should just take next word regardless
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+how do we get a truth table which will depend on the number of sirs in the question
+
+number_of_sir = 5
+for i in range(2 ** number_of_sir):
+	print(f'{i:0{number_of_sir}b}')
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+If a Sir says 'At least one of us is a Knight' the we can assume between 1-n knights assuming the Sir is a knight.
+
+If a Sir says the same but is assumed to be a Knave are there no Knights? Ie is he not telling the truth about there being at least one?  
+
+yes, if you've made the assumption that he's a knave then the opposite of his statement is true, i.e. there are no knights and all are knaves.
+
+# So if a sir says at least one of us is a knight, then number of knights == 1 or more
+# If sir is lying, less than 1 is knight, so all are knaves
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Firstly, the tutorial by Jian on Friday was extremely helpful. Thanks for that.
+I seem to have hit a roadblock at the final step of getting the solution.
+Ok, so taking Test_3.txt as an example, I managed to obtain the following:
+A list of sirs, named sirList:
+￼
+So this part of the solution is done.
+Now, I also managed to obtain a dictionary object 'keywordDict' with the details of parsed sentences, which looks like this:
+￼
+I also know that the next step is to generate the list of possibilities, which in this case would be the binary numbers from 0 to 15. I did this, and replaced 0 with 'Knight' and 1 with 'Knave':
+￼
+Now, how do I proceed from here, to check for solutions?
+In the example provided by Jian, there is just one speaker. which results in one dictionary entry. But here, there are two speakers, each saying something different. How do I co-relate this with the possibilities? 
+Please assist. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

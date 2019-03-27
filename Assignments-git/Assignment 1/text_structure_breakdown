@@ -1,0 +1,202 @@
+Sentence Structures
+
+#  Eric --> (Number of sirs) --> as we take a brute force approach, exponential in the number of sirs. Five, maybe six sirs at most --- we could actually afford more, exponential growth does not kill us so fast, but then the issue is to come up with the stories... :)
+
+# ----------------------------------------------- SENTENCE STRUCTURES------------------------------------------
+Sentences start with capital letter
+ends with (.!?) possibly closing " following
+# Contains at most one part containing ""; so at most speech
+When a sentence contains "", part outside contains single occurance of form Sir Sir_Name, who is the one speaking
+
+Sentence containing no "" might refer to a number of Sirs,
+	# In the form:
+	Sir Name
+	or
+	Sirs Name1 and Name2
+	or
+	Sirs Name1, Name2, ... and Name(n), where n>=3 and these sirs are pairwise distinct (they are unique, not duplicates, same person wont show up twice)
+
+	# So from the looks of it, Sir means after is only referring to one sir (Sir John)
+	# Sirs means referring to several sirs (Sirs John, Jack, Jill and Jacob)
+
+	# Multiple occurance of these are possible (so Sir Johna and Sir Jack)
+		# NOTE: when sirs is used, and indicates last name to follow
+		#E.g. Sirs John and Jack dislike Sirs Jake and Jan
+		# Sirs John and Jack dislike Sir Jane
+
+	# Sirs in sentence with no "" is to find sirs in puzzle
+
+
+
+
+Sir
+Sirs
+Names
+Knight
+Knave
+# Always start with capital letter
+# No other word inside a sentence is capitalised (So only capital to start of sentences and/or sir(s) and name(s))
+# Eric --> Sir names will be usual names, ascii letters, first letter capitalised (So nothing like all capital, _, basically just normal letters)
+
+    the ending double quote (not the first one)
+    . (unless followed by the double quote ")
+    , (unless followed by the double quote ")
+    ! (unless followed by the double quote ")
+    ? (unless followed by the double quote ")
+    :
+space always follows these, unless we are at end of text
+
+# ----------------------------------------------- SPEECH STRUCTURES------------------------------------------
+
+# A sir can say multiple sentences
+
+# Speech ends with (,.!?)
+
+# So disjunction means OR
+# So conjunction means AND
+# us refers to all Sirs in the question
+
+# Definition of or:
+Sir paul or Sir Jane is a knight
+(1,0)
+(0,1)
+(1,1)
+# or, at least one is a knight (same as disjunction comment below actually...)
+# Or means at least one
+
+
+#1
+"Sir Adam, Sir Bravo and Sir Charlie are Knights," said Sir Conjunction.
+"Sir Adam, Sir Bravo or Sir Charlie is a Knight," said Sir Disjunction.
+
+Eric
+Hi Christopher, you are right, Jian's syntax is for what is outside of quotes (if Jian allows both kinds of syntax within quotes, that won't harm, but only #1 will be tested).
+# So Sir ... 
+
+
+
+
+
+
+
+
+
+
+POTENTIAL SPEECH FORMS:
+• At/at least one of Conjunction_of_Sirs/us is a Knight/Knave
+• At/at most one of Conjunction_of_Sirs/us is a Knight/Knave
+• Exactly/exactly one of Conjunction_of_Sirs/us is a Knight/Knave
+• All/all of us are Knights/Knaves
+• I am a Knight/Knave
+• Sir Sir_Name is a Knight/Knave
+• Disjunction_of_Sirs is a Knight/Knave # Only 0 or 0 is false, so equivalent to at least one of them is a knight/knave # Eric--> At least one (of them is a knave/knight)
+• Conjunction_of_Sirs are Knights/Knaves
+
+
+
+
+where:
+• Disjunction_of_Sirs is in one of the following forms: – Sir_1 or Sir_2
+– Sir_1, Sir_2, ... or Sir_n (n ≥ 3)
+
+• Conjunction_of_Sirs is in one of the following forms: – Sir_1 and Sir_2
+– Sir_1, Sir_2, ... and Sir_n (n ≥ 3)
+• Sir_1, ..., Sir_n are pairwise distinct expressions of the form Sir Sir_Name or I.
+
+
+
+
+# ----------------------------------------- INPUTS AND OUTPUTS ------------------------------------------------
+
+# ---------- Input ----------
+
+# Prompts user for a text file, assumed to be stored in working directory
+Wont test non-existing file
+	# E.g. fake_file.txt     <-- not in cwd
+Empty valid file is potentially tested though
+(Eric --> WONT BE TESTED EITHER) (Probably encode if time)
+
+Also, what about a file with no sirs.
+'''
+There is a room which is empty.
+'''
+
+Unlimited number of sentences
+Unlimited sentence length
+Unlimited number of sirs
+Unlimited sir name 					# What about chars other than letters in name? like numbers
+
+# ---------- Output ----------
+
+30 sec runtime/test
+sirs is lexicographic order
+
+Output sirs in lexicographic order
+Output number of solutions or no solution
+Output solution in case of unique (1) solution
+	# Same thing, sirs in alphabetical order
+
+If only one sir, 'The Sirs are:' would pass test
+
+Empty file is a valid input though
+'The Sirs are:' # followed by nothing
+There would be exactly one solution, empty too
+(Eric --> WONT BE TESTED EITHER) (Probably encode if time)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------------------------------------------------
+
+At/at least one of Conjunction_of_Sirs/us is a Knight/Knave
+At/at most one of Conjunction_of_Sirs/us is a Knight/Knave
+Exactly/exactly one of Conjunction_of_Sirs/us is a Knight/Knave
+
+All/all of us are Knights/Knaves
+
+I am a Knight/Knave
+# Here, its 1 or 0 then 2 for everyone # If claiming to be knave
+# NOTE: I am a knave would always be no solution
+	# A knave cannot lie so therefore claiming knave would be a break rules
+	# A knight has to tell the truth so cant lie about being knave
+Sir Sir_Name is a Knight/Knave
+# So 4 cases
+# lying about being knave
+# lying about being knight
+# telling truth about being knave
+# telling trtuh about being knight
+Disjunction_of_Sirs is a Knight/Knave
+Conjunction_of_Sirs are Knights/Knaves
+# 
+
+# Perhaps store in dictionary form of list of truths
+# WHy
+# BEcause some people can speak twice
+# In which case we have 2 truth statements which must match the T and F cases
+	# i.e. Sir name is a knight
+	# Sir name is a knave
+	# would be no solution, but wouldnt be picked up if not storing names
+# Else it is no solution
+# We wouldnt catch this if it was just a plain list of lists
