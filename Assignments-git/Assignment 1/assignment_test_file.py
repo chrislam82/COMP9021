@@ -1,6 +1,44 @@
 # Assignment_test_file.py
 # Just testing how different functions work here
 
+def list_splicing ():
+	# Just checking list splicing
+	test_list = [1]
+	first, others = test_list[0], test_list[1:]
+	print (first)
+	print (others)
+
+list_splicing()
+
+def accessing_dict_of_dict_of_lists():
+	test_dict = {'John':{0:[(1),(0)], 1:[(1),(0)]}, 'Jack':{0:[(1),(0)], 1:[(1),(0)]}}
+
+	# Accessing first key in a dictionary, doesnt matter which i access
+	print (list(test_dict)[0])
+	
+
+# accessing_dict_of_dict_of_lists()
+
+def list_split ():
+	# Testing parsing a split of a list
+	test_list = [1,2,3,4,5]
+	start = 1
+	end = 3
+	# Should print [2, 3] <-- yep
+	print (test_list[start:end])
+
+	#What about into a function
+	def addition (test_list, start, end):
+		adding = 0
+		for element in range(start, end):
+			adding += test_list[element]
+		print (adding)
+
+	addition(test_list, start, end)
+	# Yep, so we can also pass through a function
+
+#list_split()
+
 def string_replace ():
 	test_string = '1_1_1_1_1_1_1_1_1_1'
 	print (test_string.replace('1', '2')) # So replaces all occurrences

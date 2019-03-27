@@ -37,3 +37,50 @@ for element in Z:
 # Here, we can generate truth statements through product of T or F for each person
 # So we can use itertools to generate lists for storage
 # We can then store and assign these to each speech
+
+print ()
+print ('My own test')
+# John --> Jack is a Knave
+# 101
+# 100
+# 011
+# 010
+
+# Now what if Jack says:
+# Jack --> John is a Knight
+# 111
+# 110
+# 001
+# 000
+
+John = [True,False]
+Jack = [True,False]
+Jake = [True,False]
+Jane = [True,False]
+#Jeff = [True,False]
+
+X = product(John,Jack,Jake,Jane)
+count = 0
+
+for element in X:
+	count += 1
+	print (count, element)
+
+# Frank, Paul, Nina
+# Nina Knight
+print ()
+print ('test2')
+A = [1,0]
+B = [1,0]
+C = [0]
+# Ok so this might work, fill for each table, then append for each
+# Each dictionary of statements
+	# key to indicate who spoke
+	# 1st list denoting assumption of lie
+	# 2nd list denoting assumption of truth
+	# According to latest python, lists orderded in append order
+
+E = product(A,B,C)
+
+for element in E:
+	print (element)
