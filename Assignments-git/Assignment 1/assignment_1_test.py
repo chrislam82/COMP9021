@@ -273,6 +273,7 @@ def find_solutions (list_of_sirs, dictionary_of_claims, solutions_list):
 		for solution in dictionary_of_claims[first_sir][truth]:
 			if rest_of_sirs == []: # Nobody else spoke
 				solutions_list.append(solution) # If nobody else spoke, all solutions are valid
+				print (test)
 			for other_sirs in rest_of_sirs: # So I skip the first person since that is themself
 				if solution in dictionary_of_claims[other_sirs][0]:
 					continue # to the next sir
