@@ -1,6 +1,34 @@
 # Assignment_test_file.py
 # Just testing how different functions work here
 
+def testing_continue():
+	for num in range(10):
+		if num % 2 == 0:
+			continue
+		elif num == 5:
+			break
+		print (num)
+
+testing_continue()
+
+def testing_and_or_combination ():
+	def if_or_test (a,b,c,d):
+		print (a,b,c,d, '--> ', end = '')
+		if (a == 1 and b == 2) or (c == 3 and d == 4):
+			print ('success')
+		else:
+			print ('failure')
+
+	if_or_test(1,1,1,1) #F
+	if_or_test(1,2,1,1) #S
+	if_or_test(1,1,3,1) #F
+	if_or_test(1,1,1,4) #F
+	if_or_test(1,1,3,4) #S
+	if_or_test(0,2,3,1) #F
+	if_or_test(0,2,1,4) #F
+
+# testing_and_or_combination()
+
 def list_splicing ():
 	# Just checking list splicing
 	test_list = [1]
@@ -8,7 +36,7 @@ def list_splicing ():
 	print (first)
 	print (others)
 
-list_splicing()
+# list_splicing()
 
 def accessing_dict_of_dict_of_lists():
 	test_dict = {'John':{0:[(1),(0)], 1:[(1),(0)]}, 'Jack':{0:[(1),(0)], 1:[(1),(0)]}}
