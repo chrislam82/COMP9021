@@ -60,12 +60,13 @@ Jake = [True,False]
 Jane = [True,False]
 #Jeff = [True,False]
 
-X = product(John,Jack,Jake,Jane)
+X = list(product(John,Jack,Jake,Jane))
+print (X)
 count = 0
 
-for element in X:
-	count += 1
-	print (count, element)
+#for element in X:
+#	count += 1
+#	print (count, element)
 
 # Frank, Paul, Nina
 # Nina Knight

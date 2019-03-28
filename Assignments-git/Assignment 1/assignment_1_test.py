@@ -7,10 +7,10 @@
 
 import os
 import re
+from itertools import product
 
 # -------------------------------------------------------------- text_split fn ------------------------------------------------------------
-# DOUBLE TEST text_split
-# str.replace --> all \n with ' ' (Also, what about \t, others with \) <-- \t should equate to ' ' so should be fine
+# Splits text into a list of words and punctuation
 
 def text_split (file, text):
 	for line in file: # Each line in in iterator is just a str
@@ -49,42 +49,19 @@ def find_sirs (text, list_of_sirs):
 			if text[word_pos + 1] not in list_of_sirs:
 				list_of_sirs.append(text[word_pos + 1])
 		word_pos += 1
-	return sorted(list_of_sirs) 				# <---------------- Fix this
-
-# -------------------------------------------------------------- process_speech fn ------------------------------------------------------------
-# Given text, find sentences, process, then pass into process_claims to fill dictionary_of_claims
-def process_speech (text, list_of_sirs, dictionary_of_claims):
-	speech_found = False
-	start_of_sentence = 0
-	end_of_sentence = 0
-	who_spoke = None
-	who_is_mentioned = []
-
-	for word_pos in range(len(text)):
-		if '\"' in text[word_pos]: # Found a sentence that has speech
-			if speech_found == False:
-				start_of_speech = word_pos # Storing where speech starts in sentence
-			else:
-				end_of_speech = word_pos # Storing where speech ends in sentence
-			speech_found = True # Set Boolean to True
-		if '.' in text[word_pos]:
-			end_of_sentence = word_pos
-			if speech_found == True:
-				who_spoke = find_who_spoke(text, start_of_sentence, end_of_sentence, start_of_speech, end_of_speech)
-				who_is_mentioned, type_of_statement, type_of_claim = find_what_is_mentioned(text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech)
-				process_claim(list_of_sirs, dictionary_of_claims, who_is_mentioned, type_of_statement, type_of_claim)
-			start_of_sentence, speech_found = end_of_sentence, False # resetting
+	return sorted(list_of_sirs)
 
 # -------------------------------------------------------------- sub fns for process_speech fn ------------------------------------------------------------
 def find_who_spoke (text, start_of_sentence, end_of_sentence, start_of_speech, end_of_speech):
-	while start_of_sentence < end_of_sentence:
-		if start_of_sentence < start_of_speech or start_of_sentence > end_of_speech:
-			if 'Sir' in word:
-				who_spoke = text[start_of_sentence + 1]
+	for word_pos in range(start_of_sentence, end_of_sentence):
+		if word_pos < start_of_speech or word_pos > end_of_speech:
+			if 'Sir' in text[word_pos]:
+				who_spoke = text[word_pos + 1]
 				break
 	return who_spoke
 
 def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech):
+	# NOTE: Should probably replace with regex. It would look neater
 	# Finds:
 		# Whos is mentioned
 		# status_claim: Knight(1) or Knave(0)
@@ -99,10 +76,12 @@ def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, sta
 			# 8 --> Conjunction_of_Sirs are Knights/Knaves
 
 	word_pos = 0
+	type_of_statement = None
+	type_of_claim = None
 	while word_pos != len(text[start_of_speech:end_of_speech]):
 		# Finding who is mentioned
 		if text[word_pos] == 'I': # Since technically 'I' can be a name --> 'Sir I'
-			if text[word_pos - 1] == 'and' or [word_pos + 1] == 'am'or [word_pos + 1] == 'or':
+			if text[word_pos - 1] == 'and' or [word_pos - 1] == 'or' or [word_pos + 1] == 'am':
 				who_is_mentioned.append(who_spoke)
 		if text[word_pos] == 'Sir':
 			if text[word_pos + 1] not in who_is_mentioned:
@@ -141,36 +120,140 @@ def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, sta
 					type_of_statement = 4
 				else:
 					type_of_statement = 8
-		word += 1
+		word_pos += 1
 	return sorted(who_is_mentioned), type_of_statement, type_of_claim
 
 # -------------------------------------------------------------- process_claim fn ------------------------------------------------------------
-# Within this statement, also pass through find_sirs to find sirs mentioned
-# DOUBLE CHECK ASSUMPTION THAT ONLY 1 statement type can be in a statement
-# Also, that only 1 can be in statement (i.e. cant say 'Sir Jack is a Knight and Sir Jill is a Knave')
-# This function would then append a list of tuples to dictionary of statements
+# Given information found in process_speech, add solutions to dictionary_of_claims
+			# 1 --> At/at least one of Conjunction_of_Sirs/us is a Knight/Knave
+			# 2 --> At/at most one of Conjunction_of_Sirs/us is a Knight/Knave
+			# 3 --> Exactly/exactly one of Conjunction_of_Sirs/us is a Knight/Knave
+			# 4 --> All/all of us are Knights/Knaves
+			# 5 --> I am a Knight/Knave
+			# 6 --> Sir Sir_Name is a Knight/Knave
+			# 7 --> Disjunction_of_Sirs is a Knight/Knave
+			# 8 --> Conjunction_of_Sirs are Knights/Knaves
+	# type_of_claim = 1 --> Knight
+	# type_of_claim = 0 --> Knave
 
-def process_claim (list_of_sirs, dictionary_of_claims, who_spoke, who_is_mentioned, type_of_statement):
+	# DOUBLE CHECK ASSUMPTION THAT ONLY 1 statement type can be in a statement
+	# Also, that only 1 can be in statement (i.e. cant say 'Sir Jack is a Knight and Sir Jill is a Knave')
+	# This function would then append a list of tuples to dictionary of statements
+
+def process_claim (list_of_sirs, dictionary_of_claims, who_spoke, who_is_mentioned, type_of_statement, type_of_claim, solutions_list):
+	# Generating all possible solutions
 	knight_or_knave = []
 	for sir in range(len(list_of_sirs)):
 		knight_or_knave.append([0, 1])
-	# Then, given who is speaking, set their element to just 1 or 0 rather than [0, 1] # To account for fact their speaking status cant be different than tuple status
-	# THen process based on speech type
+	solutions = list(product(*knight_or_knave))	# solutions   <-- Assuming speaker is truthful
+	alternative = []							# alternative <-- Assuming speaker is lying
 
+	# Index of speaker and people mentioned
+	sirs_mentioned = []
+	speaker_pos = list_of_sirs.index(who_spoke)
+	for sir_mentioned in who_is_mentioned:
+		sirs_mentioned.append(list_of_sirs.index(sir_mentioned))
 
-	pass
+	# One or more of mentioned is claim
+	if type_of_statement in [1, 7]:
+		for solution in range(len(solutions)):
+			num_knights = 0
+			for sir in sirs_mentioned: # so num_knights == number of those mentioned who are knights
+				num_knights += solutions[solution][sir]
+			if type_of_claim == 0: # claiming that at least one is a knave
+				if num_knights == len(sirs_mentioned): # So if a solution has all as knights, then that would mean speaker was lying
+					alternative.append(solutions.pop(solution))
+			else: # claiming that at least one is a knight
+				if num_knights == 0: # So solutions where none of those mentioned are knights, then we put into alternatives where None are knights
+					alternative.append(solutions.pop(solution))
+	# Just mentioned one
+	if type_of_statement == [5, 6]:
+		if type_of_claim == 1: # Then claiming to be knight
+			for solution in range(len(solutions)):
+				if solutions[solution][sirs_mentioned[0]] == 0:
+					alternative.append(solutions.pop(solution))
+		else: # Claiming to be a Knave
+			for solution in range(len(solutions)):
+				if solutions[solution][sirs_mentioned[0]] == 1:
+					alternative.append(solutions.pop(solution))
+	# All mentioned are claim
+	if type_of_statement == [4, 8]:
+		for solution in range(len(solutions)):
+			num_knights = 0
+			for sir in sirs_mentioned: # so num_knights == number of those mentioned who are knights
+				num_knights += solutions[solution][sir]
+			if type_of_claim == 0: # claiming that all mentioned are knaves
+				if num_knights != 0:
+					alternative.append(solutions.pop(solution))
+			else: # claiming that all mentioned are knights
+				if num_knights == len(sirs_mentioned):
+					alternative.append(solutions.pop(solution))
+	# One of mentioned is claim
+	if type_of_statement == 3:
+		for solution in range(len(solutions)):
+			num_knights = 0
+			for sir in sirs_mentioned: # so num_knights == number of those mentioned who are knights
+				num_knights += solutions[solution][sir]
+			if type_of_claim == 0: # claiming exactly one of mentioned is knave
+				if num_knights != len(sirs_mentioned) - 1:
+					alternative.append(solutions.pop(solution))
+			else: # claiming exactly one of mentioned is knight
+				if num_knights != 1:
+					alternative.append(solutions.pop(solution))
+	# One or zero of mentioned is claim
+	if type_of_statement == 2:
+		pass
 
-	# So store statuses in a list of lists where each 
-	# prduct(*list()) # to multiply a all tuples in a list of arbitrary length
+	# Delete solutions which dont match assumed status when speaking	
+	for solution in solutions:
+		if solution[speaker_pos] != 1:
+			solutions.remove(solution)
+	for solution in alternative:
+		if solution[speaker_pos] != 0:
+			alternative.remove(solution)
+	
+	# Now, if both are empty, then no solution (nothing they said generates a potentially valid solution)
+	if solutions == [] and alternative == []:
+		solutions_list.append('No solution')
+		return
 
-	# Iterating through list of words in string
-	# Store sentence start '.'
-		# NOTE: I think remove the '.' initialisation in text
-		# sentence_start = 0 would do the same thing and we really only need to keep track of sentence endings '.'
+	if who_spoke not in dictionary_of_claims: # They have not spoken before
+		dictionary_of_claims[who_spoke] = {0:[], 1:[]}
+		dictionary_of_claims[who_spoke][1].extend(solutions)
+		dictionary_of_claims[who_spoke][0].extend(alternative)
+	else: # They have spoken before
+		for solution in dictionary_of_claims[who_spoke][1]:
+			if solution not in solutions:
+				dictionary_of_claims[who_spoke][1].remove(solution)
+		for solution in dictionary_of_claims[who_spoke][0]:
+			if solution not in alternative:
+				dictionary_of_claims[who_spoke][0].remove(solution)
 
-	# Iterate, if " found ,then it is a speech sentence
-	# Iterate until end found
-	# Once end found,
+# -------------------------------------------------------------- process_speech fn ------------------------------------------------------------
+# Given text, find sentences, process, then pass into process_claims to fill dictionary_of_claims
+def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
+	speech_found = False
+	start_of_sentence = 0
+	end_of_sentence = 0
+	who_spoke = None
+	who_is_mentioned = []
+	type_of_statement = 0 # UNIQUE CASE WHERE NOBODY SPOKE
+
+	for word_pos in range(len(text)):
+		if '\"' in text[word_pos]: # Found a sentence that has speech
+			if speech_found == False:
+				start_of_speech = word_pos # Storing where speech starts in sentence
+			else:
+				end_of_speech = word_pos # Storing where speech ends in sentence
+			speech_found = True # Set Boolean to True
+		if '.' in text[word_pos]:
+			end_of_sentence = word_pos
+			if speech_found == True:
+				who_spoke = find_who_spoke(text, start_of_sentence, end_of_sentence, start_of_speech, end_of_speech)
+				who_is_mentioned, type_of_statement, type_of_claim = find_what_is_mentioned(text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech)
+				process_claim(list_of_sirs, dictionary_of_claims, who_spoke, who_is_mentioned, type_of_statement, type_of_claim, solutions_list)
+			start_of_sentence, speech_found = end_of_sentence, False # resetting
+
 
 # -------------------------------------------------------------- find_solutions fn ------------------------------------------------------------
 # Find all solutions by processing dictionary_of_claims 
@@ -241,10 +324,12 @@ with open('test_1.txt') as file:
 	list_of_sirs = find_sirs(text, list_of_sirs)
 
 	# Fill dictionary_of_claims
-#	process_speech(text, list_of_sirs, dictionary_of_claims)
+	process_speech(text, list_of_sirs, dictionary_of_claims, solutions_list)
+	print (dictionary_of_claims)
 
 	# Find solutions given someone spoke
-#	find_solutions(list_of_sirs, dictionary_of_claims, solutions_list)
+	find_solutions(list_of_sirs, dictionary_of_claims, solutions_list)
+	print (solutions_list)
 
 	# Printing who the sirs are here
 	print('The Sirs are: ', end = '')
