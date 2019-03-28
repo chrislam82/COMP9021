@@ -239,12 +239,12 @@ def process_claim (list_of_sirs, dictionary_of_claims, who_spoke, who_is_mention
 # -------------------------------------------------------------- process_speech fn ------------------------------------------------------------
 # Given text, find sentences, process, then pass into process_claims to fill dictionary_of_claims
 def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
-	speech_found = False
 	start_of_sentence = 0
 	end_of_sentence = 0
+	speech_found = False
 	who_spoke = None
 	who_is_mentioned = []
-	type_of_statement = 0 # UNIQUE CASE WHERE NOBODY SPOKE
+#	type_of_statement = 0 # UNIQUE CASE WHERE NOBODY SPOKE
 
 	for word_pos in range(len(text)):
 		if '\"' in text[word_pos]: # Found a sentence that has speech
