@@ -2,6 +2,9 @@ Sentence Structures
 
 #  Eric --> (Number of sirs) --> as we take a brute force approach, exponential in the number of sirs. Five, maybe six sirs at most --- we could actually afford more, exponential growth does not kill us so fast, but then the issue is to come up with the stories... :)
 
+Eric --> Only punction that is found in the 3 test files
+!",.?:
+
 # ----------------------------------------------- SENTENCE STRUCTURES------------------------------------------
 Sentences start with capital letter
 ends with (.!?) possibly closing " following

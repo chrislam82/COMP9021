@@ -29,9 +29,7 @@ def text_split (file, text):
 		line = line.replace('\n', ' ')
 		line = line.replace('\t', ' ')
 		line = line.replace(',', ' ') # <----------------- NOTE this is only ok if ',' has no special difference in speech comprehension and if 2 forms cant exist
-		print(line)
 		line_list = line.split(' ')
-		print(line_list)
 		for word in line_list:
 			split = re.search('([\".?!,:]*)([a-zA-Z]*)([\".?!,:]*)', word)
 			text += list(split.groups())
@@ -248,15 +246,8 @@ def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
 				who_is_mentioned = []
 				who_spoke = find_who_spoke(text, start_of_sentence, end_of_sentence, start_of_speech, end_of_speech)
 				who_is_mentioned, type_of_statement, type_of_claim = find_what_is_mentioned(text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech)
-				print ()
-				print ("who spoke", who_spoke)
-				print ("who is mentioned", who_is_mentioned)
-				print ("type of statement", type_of_statement)
-				print ("type of claim", type_of_claim)
-				print ()
 				process_claim(list_of_sirs, dictionary_of_claims, who_spoke, who_is_mentioned, type_of_statement, type_of_claim, solutions_list)
 			start_of_sentence, speech_found = end_of_sentence, False # resetting
-
 
 # -------------------------------------------------------------- find_solutions fn ------------------------------------------------------------
 # Find all solutions by processing dictionary_of_claims 
@@ -265,9 +256,6 @@ def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
 	# If only one person spoke, in which case their potential solutions is the final solutions
 
 def find_solutions (list_of_sirs, dictionary_of_claims, solutions_list):
-	print ()
-	print ()
-	print ('---------- Starting finding solutions ----------')
 	if not dictionary_of_claims: # Nobody spoke, so return none, ending function
 		return
 	# Else, somebody spoke
@@ -295,21 +283,11 @@ solutions_list = []
 file_name = input('Which text file do you want to use for the puzzle? ')
 with open(file_name) as file:
 
-	print ('....................................................')
 	# return a list of words and punctuation in the text
 	text_split(file, text)
 
-	print ('....................................................')
-	print()
-	print(text)
-	print()
-	print(' '.join(text))
-	print()
-	print ('....................................................')
-
 	# find all sirs in a sorted list
 	list_of_sirs = find_sirs(text, list_of_sirs)
-	print (list_of_sirs)
 
 	# Fill dictionary_of_claims
 	process_speech(text, list_of_sirs, dictionary_of_claims, solutions_list)

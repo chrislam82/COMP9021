@@ -1,6 +1,21 @@
 # Assignment_test_file.py
 # Just testing how different functions work here
 
+''' OTHER STUFF TO CONSIDER
+l1, l2 = [0,1,0],[1,1,1]
+new_l = [i and j for i,j in zip(l1,l2)]
+print(new_l)
+	# What does this do?
+
+from functools import reduce
+from operator import and_
+print(reduce(and_, [{1,2,3},{2,3,4},{3,4,5},{1,3,5}]))
+# Intersection of sets
+# returns 3
+# What about list.intersection() fn?
+'''
+
+
 def testing_continue():
 	for num in range(10):
 		if num % 2 == 0:
