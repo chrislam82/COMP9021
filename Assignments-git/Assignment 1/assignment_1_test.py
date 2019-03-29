@@ -1,10 +1,19 @@
 # COMP9021 Assignment 1
 # Christopher Lam
-# Not the prettiest...
+	# Not the prettiest...
+	# Try to implement truth table next time
+	# Also, problem in code in which if list is no longer insertion ordered in python, this will case bugs
 
 import os
 import re
 from itertools import product
+
+# Check process_claim
+# Save as proper ass1 name
+# Submit to website
+# Test with tutor and other tests
+# Any other changes and resubmit
+# One quick check again just before due date/time
 
 #import time
 #start = time.time()
@@ -26,6 +35,8 @@ def text_split (file, text):
 		for word in line_list:
 			split = re.search('([\"\'.?!,:]*)([a-zA-Z]*)([\"\'.?!,:]*)', word)
 			text += list(split.groups())
+		text.append('.') # Just to control for potential overflow if text doesnt end with punctuation
+		text.append('.')
 	while True: # Removing extra '' in list created by * in regex
 		try:
 			text.remove('')
@@ -63,7 +74,7 @@ def find_who_spoke (text, start_of_sentence, end_of_sentence, start_of_speech, e
 	return who_spoke
 
 def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech):
-	# NOTE: Should probably replace with regex. It would look neater
+	# NOTE: Shouldve replaced with regex. It would be neater
 	# Finds:
 		# Whos is mentioned
 		# type_of_claim: Knight(1) or Knave(0)
@@ -83,12 +94,10 @@ def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, sta
 	while word_pos < end_of_speech:
 		# Finding who is mentioned
 		if text[word_pos] == 'I': # Since technically 'I' can be a name --> 'Sir I'
-			if text[word_pos - 1] == 'and' or text[word_pos - 1] == 'or' or text[word_pos + 1] == 'am':
-				who_is_mentioned.append(who_spoke)
+			who_is_mentioned.append(who_spoke)
 		if text[word_pos] == 'Sir':
-			if text[word_pos + 1] not in who_is_mentioned:
-				who_is_mentioned.append(text[word_pos + 1])
-				word_pos += 1
+			who_is_mentioned.append(text[word_pos + 1])
+			word_pos += 2 # In case I have name 'Sir Sir' or 'Sir I' # Only way this can overflow is if last word is Sir and punctuation exist
 		if text[word_pos] == 'us': # Since names must be Capital, I dont need to check if us is a Sir_Name
 			for sir in list_of_sirs:
 				who_is_mentioned.append(sir)
@@ -112,13 +121,14 @@ def find_what_is_mentioned (text, list_of_sirs, who_spoke, who_is_mentioned, sta
 		if text[word_pos] == 'I' and text[word_pos + 1] == 'am':
 			type_of_statement = 5
 		if text[word_pos] == 'is' and text[word_pos + 1] == 'a':
-			if len(who_is_mentioned) == 1:
-				type_of_statement = 6
-			else:
-				type_of_statement = 7
+			if type_of_statement not in [1, 2, 3]:
+				if len(who_is_mentioned) == 1: # Only 1 Sir has been mentioned
+					type_of_statement = 6
+				else: # More than 1 Sir has been mentioned
+					type_of_statement = 7
 		if text[word_pos] == 'are':
-			if text[word_pos + 1] in ['Knight', 'Knights', 'Knave', 'Knave']:
-				if len(who_is_mentioned) == len(list_of_sirs):
+			if text[word_pos + 1] in ['Knights', 'Knaves']:
+				if len(who_is_mentioned) == len(list_of_sirs): # Everyone has been mentioned
 					type_of_statement = 4
 				else:
 					type_of_statement = 8
@@ -151,7 +161,7 @@ def process_claim (list_of_sirs, dictionary_of_claims, who_spoke, who_is_mention
 	sirs_mentioned = []
 	speaker_pos = list_of_sirs.index(who_spoke)
 	for sir_mentioned in who_is_mentioned:
-		sirs_mentioned.append(list_of_sirs.index(sir_mentioned))
+		sirs_mentioned.append(list_of_sirs.index(sir_mentioned)) # So coverting sirs_mentioned from str to list_of_sirs list index
 
 	# Filling solutions into the solutions or alterantive
 	for solution in range(len(all_solutions)):
@@ -240,11 +250,7 @@ def process_claim (list_of_sirs, dictionary_of_claims, who_spoke, who_is_mention
 # Given text, find sentences, process, then pass into process_claims to fill dictionary_of_claims
 def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
 	start_of_sentence = 0
-	end_of_sentence = 0
 	speech_found = False
-	who_spoke = None
-	who_is_mentioned = []
-#	type_of_statement = 0 # UNIQUE CASE WHERE NOBODY SPOKE
 
 	for word_pos in range(len(text)):
 		if '\"' in text[word_pos]: # Found a sentence that has speech
@@ -256,6 +262,8 @@ def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
 		if '.' in text[word_pos]:
 			end_of_sentence = word_pos
 			if speech_found == True:
+				who_spoke = None
+				who_is_mentioned = []
 				who_spoke = find_who_spoke(text, start_of_sentence, end_of_sentence, start_of_speech, end_of_speech)
 				who_is_mentioned, type_of_statement, type_of_claim = find_what_is_mentioned(text, list_of_sirs, who_spoke, who_is_mentioned, start_of_speech, end_of_speech)
 				print ()
@@ -271,7 +279,6 @@ def process_speech (text, list_of_sirs, dictionary_of_claims, solutions_list):
 # Find all solutions by processing dictionary_of_claims 
 	# We need to test if each solution for one person matches a solution from other sirs
 	# If not, then we have conflicting statements, something one person said cant be a truth; they are speaking gibberish
-
 	# If only one person spoke, in which case their potential solutions is the final solutions
 
 def find_solutions (list_of_sirs, dictionary_of_claims, solutions_list):
@@ -301,7 +308,7 @@ dictionary_of_claims = {} # Dictionary with keys [John][KnightOrKnave][list of t
 solutions_list = []
 
 file_name = input('Which text file do you want to use for the puzzle? ')
-with open('test_3.txt') as file:
+with open('test_4.txt') as file:
 
 	print ('....................................................')
 	# return a list of words and punctuation in the text
@@ -324,8 +331,8 @@ with open('test_3.txt') as file:
 	print (dictionary_of_claims)
 
 	# Find solutions given someone spoke (Dont run fn if something stupid has been stated)
-#	if 'No solution' not in solutions_list:
-	find_solutions(list_of_sirs, dictionary_of_claims, solutions_list)
+	if 'No solution' not in solutions_list:
+		find_solutions(list_of_sirs, dictionary_of_claims, solutions_list)
 	print (solutions_list)
 
 	# Printing who the sirs are here
@@ -345,7 +352,7 @@ with open('test_3.txt') as file:
 		print('There are', len(solutions_list), 'solutions.')
 	else:
 		print('There is a unique solution:') # There is only one solution
-		for sir in len(solutions_list):
+		for sir in range(len(solutions_list[0])):
 			if solutions_list[0][sir] == 0:
 				print('Sir', list_of_sirs[sir], 'is a Knave.')
 			else:
