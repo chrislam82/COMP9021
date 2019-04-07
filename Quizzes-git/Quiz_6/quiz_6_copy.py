@@ -7,6 +7,7 @@
 
 
 from random import seed, randint
+import numpy
 import sys
 
 
@@ -14,20 +15,30 @@ def display_grid():
     for i in range(len(grid)):
         print('   ', ' '.join(str(int(grid[i][j] != 0)) for j in range(len(grid))))
 
-def recursive_grid(size = 0): # default ofsize = 0
-	size += 1 # For each check in recursion, size of grid += 1
+def recursive_grid(triangle_grid, down, down_left, down_right, size = 0):
+	triangle_check = numpy.zeros((len(grid[0]) + 4, len(grid[0]) + 4), numpy.int)
+	size += 1 # For each check in recursion, we are checking if a triangle of size size + 2 is in grid
+	triangle_found = False
 
+	triangle_check[2: -2, 2: -2] =\
+	triangle_grid[2: -2, 2: -2] +\
+	triangle_grid[(down[0] + 2): (down[0] - 2), (down[1] + 2): (down[1] - 2)] +\
+	triangle_grid[(down_left[0] + 2): (down_left[0] - 2), (down_left[1] + 2): (down_left[1] - 2)] +\
+	triangle_grid[(down_right[0] + 2): (down_right[0] - 2), (down_right[1] + 2): (down_right[1] - 2)]
 
+	for row in triangle_check:
+		if 4 in row:
+			triangle_found = True
+	if triangle_found == True:
+		triangle_grid = numpy.equal(triangle_check, 4).astype(numpy.int)
 
+		return recursive_grid(triangle_grid, down, down_left, down_right, size)	
+	return size
 
-
-
-	
-# Checking if a full triangle was found
-	# For __ For __:
-		# If cell = size * 4:
-			# return recursive_grid(size)
-	# return (size - 1) # Basically, a triangle of length size was not found, hence the largest was size - 1
+def generate_framed_grid (grid):
+	framed_numpy_grid = numpy.zeros((len(grid[0]) + 4, len(grid[0]) + 4), numpy.int) # Generate framed grid
+	framed_numpy_grid[2: -2, 2: -2] += numpy.not_equal(grid, 0).astype(numpy.int)
+	return framed_numpy_grid
 
 def size_of_largest_isosceles_triangle():
 	# So input 1 is seed for randint generation
@@ -43,14 +54,30 @@ def size_of_largest_isosceles_triangle():
 
 	# So this function, given grid, which is generated in main, find the largest isosceles_triangle
 		# 1st, transform to 1s and 0s just like in display_grid
-	for row in range(len(grid)):
-		for column in range(len(grid[row])):
-			grid[row][column] = int(grid[row][column] != 0)
 
-		# 2nd function to layer grids on top of each other
-		# 3rd, evaluate the resulting grid
-	pass
-    # REPLACE pass WITH YOUR CODE
+	if not grid: # if grid is empty
+		return 0
+	for row in grid: # If grid is all 0s
+		if not any(row):
+			return 0
+
+	# Find maximum size for triangle facing each direction
+ 		# Moving grid in triangle directions (up, down, left, right)
+ 		# Coordinates are [row][column] so [y][x] --> Reversed direction, also 0,0 in top left corner
+	framed_numpy_grid = generate_framed_grid(grid)
+	up_size = recursive_grid(framed_numpy_grid, [-1, 0], [-1, -1], [-1, 1])
+
+	framed_numpy_grid = generate_framed_grid(grid)
+	down_size = recursive_grid(framed_numpy_grid, [1, 0], [1, -1], [1, 1])
+
+	framed_numpy_grid = generate_framed_grid(grid)
+	left_size = recursive_grid(framed_numpy_grid, [0, -1], [-1, -1], [1, -1])
+
+	framed_numpy_grid = generate_framed_grid(grid)
+	right_size = recursive_grid(framed_numpy_grid, [0, 1], [-1, 1], [1, 1])
+
+	return max(up_size, down_size, left_size, right_size)
+
 
 
 try:
