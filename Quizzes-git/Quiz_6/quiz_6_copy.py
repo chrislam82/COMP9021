@@ -16,7 +16,7 @@ def display_grid():
         print('   ', ' '.join(str(int(grid[i][j] != 0)) for j in range(len(grid))))
 
 def recursive_grid(triangle_grid, down, down_left, down_right, size = 0):
-	triangle_check = numpy.zeros((len(grid[0]) + 4, len(grid[0]) + 4), numpy.int)
+	triangle_check = numpy.zeros((len(grid[0]) + 4, len(grid[0]) + 4), numpy.int) # Generate empty framed grid
 	size += 1 # For each check in recursion, we are checking if a triangle of size size + 2 is in grid
 	triangle_found = False
 
@@ -26,7 +26,7 @@ def recursive_grid(triangle_grid, down, down_left, down_right, size = 0):
 	triangle_grid[(down_left[0] + 2): (down_left[0] - 2), (down_left[1] + 2): (down_left[1] - 2)] +\
 	triangle_grid[(down_right[0] + 2): (down_right[0] - 2), (down_right[1] + 2): (down_right[1] - 2)]
 
-	for row in triangle_check:
+	for row in triangle_check: # I just want iteration to complete before doing anything wierd
 		if 4 in row:
 			triangle_found = True
 	if triangle_found == True:
@@ -81,12 +81,12 @@ def size_of_largest_isosceles_triangle():
 
 
 try:
-    arg_for_seed, density = (abs(int(x)) for x in input('Enter two integers: ').split())
+    arg_for_seed, density, size = (abs(int(x)) for x in input('Enter two integers: ').split())
 except ValueError:
     print('Incorrect input, giving up.')
     sys.exit()
 seed(arg_for_seed)
-grid = [[randint(0, density) for _ in range(10)] for _ in range(10)]
+grid = [[randint(0, density) for _ in range(size)] for _ in range(size)]
 print('Here is the grid that has been generated:')
 display_grid()
 print('The largest isosceles triangle has a size of',
